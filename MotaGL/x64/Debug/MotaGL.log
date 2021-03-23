@@ -1,3 +1,4 @@
 ﻿  main.cpp
-C:\Estudos\OpenGL\MotaGL\MotaGL\main.cpp(208,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(8,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   MotaGL.vcxproj -> C:\Estudos\OpenGL\MotaGL\x64\Debug\MotaGL.exe
