@@ -6,8 +6,10 @@
 
 #include "../include/shader.h";
 #include "../include/Vec2.h";
+#include "../include/Texture.h";
 
 Vec2 movement = Vec2();
+float mixAmount = 0.2f;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -51,21 +53,35 @@ void checkInputs(GLFWwindow* window) {
 		movement.y += 0.001f * 16;
 	}
 
+	//I
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		if (mixAmount < 1.0f) {
+			mixAmount += 0.01f;
+		}
+	}
+
+	//K
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+		if (mixAmount > 0.0f) {
+			mixAmount -= 0.01f;
+		}
+	}
 }
 
 unsigned int* initializeObjects() {
 
 	float vertices_1[] = {
 		//Rectangle
-		//0.5f,  0.5f, 0.0f,  // top right
-		//0.5f, -0.5f, 0.0f,  // bottom right
-		//-0.5f, -0.5f, 0.0f,  // bottom left
-		//-0.5f,  0.5f, 0.0f   // top left
+		//   Position                Color         Texture coodinates
+		0.5f,  0.5f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 1.0f,  // top right
+		0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    0.0f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f   // top left
 
 		//// first triangle
-		-0.8f, -0.5f, 0.0f, //bottom left
-		-0.2f, -0.5f, 0.0f, //bottom right
-		-0.5f,  0.5f, 0.0f //top middle
+		//-0.8f, -0.5f, 0.0f, //bottom left
+		//-0.2f, -0.5f, 0.0f, //bottom right
+		//-0.5f,  0.5f, 0.0f //top middle
 	};
 
 
@@ -79,15 +95,15 @@ unsigned int* initializeObjects() {
 
 	unsigned int indices_1[] = {
 		//Rectangle
-		//0, 1, 3, //First triangle
-		//1, 2, 3  //Second triangle
+		0, 1, 3, //First triangle
+		1, 2, 3  //Second triangle
 
 		//Triangle
 		//0, 1, 2 //First triangle
 		//3, 4, 5  //Second triangle
 
 		//Single triangle
-		0, 1, 2
+		//0, 1, 2
 	};
 
 	unsigned int indices_2[] = {
@@ -118,8 +134,17 @@ unsigned int* initializeObjects() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_1), indices_1, GL_STATIC_DRAW);
 
 	//Set correct vertex attribute pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	//Position
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Texture coordinates
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(VAO[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
@@ -129,7 +154,7 @@ unsigned int* initializeObjects() {
 
 	//Set correct vertex attribute pointers
 
-	//Coordinates
+	//Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
@@ -155,10 +180,25 @@ void renderObject(unsigned int VAO, Shader shader, Vec2 movement) {
 	//changeShaderColor(shaderProgram);
 	shader.use();
 	shader.setVec2("moveAmount", movement);
+
 	glBindVertexArray(VAO);
 
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+}
+
+void renderTextureObject(unsigned int VAO, Shader shader, Texture texture) {
+	shader.use();
+	shader.setFloat("mixAmount", mixAmount);
+
+	//Activate and bind each texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.idArray[0]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture.idArray[1]);
+
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 int main() {
@@ -192,12 +232,23 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	Shader* shaderProgram = new Shader[2];
-	shaderProgram[0] = Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+	shaderProgram[0] = Shader("shaders/vertex_texture.glsl", "shaders/fragment_texture_2.glsl");
 	shaderProgram[1] = Shader("shaders/vertex_movement_color.glsl", "shaders/fragment_movement_color.glsl");
 
 	float red = 1.0f;
 
 	unsigned int* VAO = initializeObjects();
+
+	//Texture initialization
+	Texture texture = Texture();
+	texture.LoadTexture("assets/textures/container.jpg", 0);
+	texture.LoadTexture("assets/textures/awesomeface.png", 1);
+
+
+	//Setting the texture uniforms on texture fragment shader
+	shaderProgram[0].use();
+	shaderProgram[0].setInt("texture1", 0);
+	shaderProgram[0].setInt("texture2", 1);
 
 	//Render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -205,7 +256,9 @@ int main() {
 		//Input routines
 		checkInputs(window);
 
-		red -= 0.01f;
+		if (red >= 0.2f) {
+			red -= 0.01f;
+		}
 
 		//Rendering routines
 
@@ -214,7 +267,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Objects
-		renderObject(VAO[0], shaderProgram[0], Vec2());
+		renderTextureObject(VAO[0], shaderProgram[0], texture);
 		renderObject(VAO[1], shaderProgram[1], movement);
 
 		//Frame buffer update

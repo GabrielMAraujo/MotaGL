@@ -22,21 +22,31 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\shader.h" />
+    <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\fragment_custom.glsl" />
     <None Include="shaders\fragment_movement_color.glsl" />
+    <None Include="shaders\fragment_texture.glsl" />
+    <None Include="shaders\fragment_texture_2.glsl" />
     <None Include="shaders\vertex.glsl" />
     <None Include="shaders\vertex_custom.glsl" />
     <None Include="shaders\vertex_inverted.glsl" />
     <None Include="shaders\vertex_movement.glsl" />
     <None Include="shaders\vertex_movement_color.glsl" />
+    <None Include="shaders\vertex_texture.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\container.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

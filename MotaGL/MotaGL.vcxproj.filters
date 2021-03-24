@@ -27,12 +27,24 @@
     <ClCompile Include="src\Vec2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,5 +57,13 @@
     <None Include="shaders\vertex_movement.glsl" />
     <None Include="shaders\fragment_movement_color.glsl" />
     <None Include="shaders\vertex_movement_color.glsl" />
+    <None Include="shaders\vertex_texture.glsl" />
+    <None Include="shaders\fragment_texture.glsl" />
+    <None Include="shaders\fragment_texture_2.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
