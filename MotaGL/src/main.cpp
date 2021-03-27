@@ -3,6 +3,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "../include/shader.h";
 #include "../include/Vec2.h";
@@ -116,16 +119,16 @@ unsigned int* initializeObjects() {
 		//3, 4, 5  //Second triangle
 	};
 
-	unsigned int* VBO = new unsigned int[2];
-	glGenBuffers(2, VBO);
+	unsigned int* VBO = new unsigned int[3];
+	glGenBuffers(3, VBO);
 
 	//VAO
-	unsigned int* VAO = new unsigned int[2];
-	glGenVertexArrays(2, VAO);
+	unsigned int* VAO = new unsigned int[3];
+	glGenVertexArrays(3, VAO);
 
 	//EBO
-	unsigned int* EBO = new unsigned int[2];
-	glGenBuffers(2, EBO);
+	unsigned int* EBO = new unsigned int[3];
+	glGenBuffers(3, EBO);
 
 	glBindVertexArray(VAO[0]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
@@ -162,6 +165,26 @@ unsigned int* initializeObjects() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
+
+	glBindVertexArray(VAO[2]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_1), vertices_1, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[2]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_1), indices_1, GL_STATIC_DRAW);
+
+	//Set correct vertex attribute pointers
+	//Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Position
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Texture coordinates
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
 	return VAO;
 }
 
@@ -187,9 +210,37 @@ void renderObject(unsigned int VAO, Shader shader, Vec2 movement) {
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 }
 
-void renderTextureObject(unsigned int VAO, Shader shader, Texture texture) {
+glm::mat4 vectorTransformations(int behaviour) {
+
+	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glm::mat4 transformationMatrix = glm::mat4(1.0f);
+
+	if (behaviour == 1) {
+		transformationMatrix = glm::translate(transformationMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
+		//transformationMatrix = glm::rotate(transformationMatrix, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0f));
+		transformationMatrix = glm::rotate(transformationMatrix, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0f));
+		transformationMatrix = glm::scale(transformationMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+	}
+
+	if (behaviour == 2) {
+		transformationMatrix = glm::translate(transformationMatrix, glm::vec3(-0.5f, 0.5f, 0.0f));
+		transformationMatrix = glm::rotate(transformationMatrix, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0f));
+		transformationMatrix = glm::scale(transformationMatrix, glm::vec3(sin((float)glfwGetTime()), cos((float)glfwGetTime()), 0.5f));
+	}
+
+	vec = transformationMatrix * vec;
+
+	//std::cout << "[" << vec.x << ", " << vec.y << ", " << vec.z << "]" << std::endl;
+
+	return transformationMatrix;
+}
+
+void renderTextureObject(unsigned int VAO, Shader shader, Texture texture, int behaviour) {
 	shader.use();
 	shader.setFloat("mixAmount", mixAmount);
+	shader.setMat4("transform", vectorTransformations(behaviour));
+
 
 	//Activate and bind each texture
 	glActiveTexture(GL_TEXTURE0);
@@ -231,9 +282,10 @@ int main() {
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	Shader* shaderProgram = new Shader[2];
-	shaderProgram[0] = Shader("shaders/vertex_texture.glsl", "shaders/fragment_texture_2.glsl");
+	Shader* shaderProgram = new Shader[3];
+	shaderProgram[0] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
 	shaderProgram[1] = Shader("shaders/vertex_movement_color.glsl", "shaders/fragment_movement_color.glsl");
+	shaderProgram[2] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
 
 	float red = 1.0f;
 
@@ -244,9 +296,9 @@ int main() {
 	texture.LoadTexture("assets/textures/container.jpg", 0);
 	texture.LoadTexture("assets/textures/awesomeface.png", 1);
 
+	shaderProgram[0].use();
 
 	//Setting the texture uniforms on texture fragment shader
-	shaderProgram[0].use();
 	shaderProgram[0].setInt("texture1", 0);
 	shaderProgram[0].setInt("texture2", 1);
 
@@ -267,8 +319,9 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Objects
-		renderTextureObject(VAO[0], shaderProgram[0], texture);
+		renderTextureObject(VAO[0], shaderProgram[0], texture, 1);
 		renderObject(VAO[1], shaderProgram[1], movement);
+		renderTextureObject(VAO[2], shaderProgram[2], texture, 2);
 
 		//Frame buffer update
 		glBindVertexArray(0);

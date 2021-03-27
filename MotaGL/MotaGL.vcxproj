@@ -44,6 +44,7 @@
     <None Include="shaders\vertex_movement.glsl" />
     <None Include="shaders\vertex_movement_color.glsl" />
     <None Include="shaders\vertex_texture.glsl" />
+    <None Include="shaders\vertex_transformation.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\container.jpg" />
