@@ -11,6 +11,9 @@
 #include "../include/Vec2.h";
 #include "../include/Texture.h";
 
+float screenWidth = 1280.0f;
+float screenHeight = 720.0f;
+
 Vec2 movement = Vec2();
 float mixAmount = 0.2f;
 
@@ -76,15 +79,58 @@ unsigned int* initializeObjects() {
 	float vertices_1[] = {
 		//Rectangle
 		//   Position                Color         Texture coodinates
-		0.5f,  0.5f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 1.0f,  // top right
-		0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    0.0f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f   // top left
+		//0.5f,  0.5f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 1.0f,  // top right
+		//0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,  // bottom right
+		//-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    0.0f, 0.0f,  // bottom left
+		//-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f   // top left
 
 		//// first triangle
 		//-0.8f, -0.5f, 0.0f, //bottom left
 		//-0.2f, -0.5f, 0.0f, //bottom right
 		//-0.5f,  0.5f, 0.0f //top middle
+
+		//Cube
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f
 	};
 
 
@@ -141,7 +187,7 @@ unsigned int* initializeObjects() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Position
+	//Color
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
@@ -217,10 +263,10 @@ glm::mat4 vectorTransformations(int behaviour) {
 	glm::mat4 transformationMatrix = glm::mat4(1.0f);
 
 	if (behaviour == 1) {
-		transformationMatrix = glm::translate(transformationMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
-		//transformationMatrix = glm::rotate(transformationMatrix, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0f));
-		transformationMatrix = glm::rotate(transformationMatrix, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0f));
-		transformationMatrix = glm::scale(transformationMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+		//transformationMatrix = glm::translate(transformationMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
+		////transformationMatrix = glm::rotate(transformationMatrix, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0f));
+		//transformationMatrix = glm::rotate(transformationMatrix, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0f));
+		//transformationMatrix = glm::scale(transformationMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 	}
 
 	if (behaviour == 2) {
@@ -236,11 +282,43 @@ glm::mat4 vectorTransformations(int behaviour) {
 	return transformationMatrix;
 }
 
-void renderTextureObject(unsigned int VAO, Shader shader, Texture texture, int behaviour) {
+void createRenderMatrices(Shader shader) {
+
+	shader.use();
+
+	glm::mat4 modelMatrix = glm::mat4(1.0);
+	modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+	shader.setMat4("model", modelMatrix);
+
+	glm::mat4 viewMatrix = glm::mat4(1.0);
+	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+	shader.setMat4("view", viewMatrix);
+
+	glm::mat4 projectionMatrix = glm::mat4(1.0f);
+	projectionMatrix = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);
+	shader.setMat4("projection", projectionMatrix);
+
+}
+
+void renderCubes(unsigned int VAO, Shader shader, Texture texture) {
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	shader.use();
 	shader.setFloat("mixAmount", mixAmount);
-	shader.setMat4("transform", vectorTransformations(behaviour));
+	shader.setMat4("transform", glm::mat4(1.0f));
 
+	createRenderMatrices(shader);
 
 	//Activate and bind each texture
 	glActiveTexture(GL_TEXTURE0);
@@ -249,7 +327,43 @@ void renderTextureObject(unsigned int VAO, Shader shader, Texture texture, int b
 	glBindTexture(GL_TEXTURE_2D, texture.idArray[1]);
 
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//Rendering 10 cubes
+	for (unsigned int i = 0; i < 10; i++) {
+		glm::mat4 modelMatrix = glm::mat4(1.0f);
+		//Setting rotation angle and translation based on index
+		modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
+		
+		float angle = 0.0f;
+		
+		if (i % 3 == 0) {
+			angle = 20.0f * (i + 1);
+		}
+		
+		
+		modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime() * glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		shader.setMat4("model", modelMatrix);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);	
+}
+
+void renderTextureObject(unsigned int VAO, Shader shader, Texture texture, int behaviour) {
+	shader.use();
+	shader.setFloat("mixAmount", mixAmount);
+	shader.setMat4("transform", vectorTransformations(behaviour));
+
+	createRenderMatrices(shader);
+
+	//Activate and bind each texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.idArray[0]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture.idArray[1]);
+
+	glBindVertexArray(VAO);
+	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 int main() {
@@ -261,7 +375,7 @@ int main() {
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "MotaGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "MotaGL", NULL, NULL);
 
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -283,7 +397,7 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	Shader* shaderProgram = new Shader[3];
-	shaderProgram[0] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
+	shaderProgram[0] = Shader("shaders/vertex_perspective.glsl", "shaders/fragment_texture_2.glsl");
 	shaderProgram[1] = Shader("shaders/vertex_movement_color.glsl", "shaders/fragment_movement_color.glsl");
 	shaderProgram[2] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
 
@@ -301,12 +415,16 @@ int main() {
 	//Setting the texture uniforms on texture fragment shader
 	shaderProgram[0].setInt("texture1", 0);
 	shaderProgram[0].setInt("texture2", 1);
+	createRenderMatrices(shaderProgram[0]);
 
 	//Render loop
 	while (!glfwWindowShouldClose(window)) {
 
 		//Input routines
 		checkInputs(window);
+
+		//Enabling depth test
+		glEnable(GL_DEPTH_TEST);
 
 		if (red >= 0.2f) {
 			red -= 0.01f;
@@ -316,12 +434,12 @@ int main() {
 
 		//Background
 		glClearColor(red, 0.0f, 0.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Objects
-		renderTextureObject(VAO[0], shaderProgram[0], texture, 1);
+		renderCubes(VAO[0], shaderProgram[0], texture);
 		renderObject(VAO[1], shaderProgram[1], movement);
-		renderTextureObject(VAO[2], shaderProgram[2], texture, 2);
+		//renderTextureObject(VAO[2], shaderProgram[2], texture, 2);
 
 		//Frame buffer update
 		glBindVertexArray(0);

@@ -43,6 +43,7 @@
     <None Include="shaders\vertex_inverted.glsl" />
     <None Include="shaders\vertex_movement.glsl" />
     <None Include="shaders\vertex_movement_color.glsl" />
+    <None Include="shaders\vertex_perspective.glsl" />
     <None Include="shaders\vertex_texture.glsl" />
     <None Include="shaders\vertex_transformation.glsl" />
   </ItemGroup>

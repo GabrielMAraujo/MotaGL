@@ -2,4 +2,6 @@
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(10,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(11,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(12,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(378,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(378,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   MotaGL.vcxproj -> C:\Estudos\OpenGL\MotaGL\x64\Debug\MotaGL.exe
