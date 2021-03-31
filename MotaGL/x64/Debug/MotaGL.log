@@ -2,6 +2,13 @@
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(10,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(11,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(12,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(378,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(378,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(50,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(51,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(56,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(57,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(81,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(82,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(492,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(506,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Estudos\OpenGL\MotaGL\MotaGL\src\main.cpp(506,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   MotaGL.vcxproj -> C:\Estudos\OpenGL\MotaGL\x64\Debug\MotaGL.exe
