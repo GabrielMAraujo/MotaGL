@@ -40,6 +40,98 @@ bool firstMouse = false;
 float fov = 90;
 const float zoomSensitivity = 4.0f;
 
+//Lighting
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
+float vertices_1[] = {
+	//Rectangle
+	//   Position                Color         Texture coodinates
+	//0.5f,  0.5f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 1.0f,  // top right
+	//0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,  // bottom right
+	//-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    0.0f, 0.0f,  // bottom left
+	//-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f   // top left
+
+	//// first triangle
+	//-0.8f, -0.5f, 0.0f, //bottom left
+	//-0.2f, -0.5f, 0.0f, //bottom right
+	//-0.5f,  0.5f, 0.0f //top middle
+
+	//Cube
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f
+};
+
+
+float vertices_2[] = {
+	// second triangle
+	//     Postions      |     Colors
+	 0.2f, -0.5f, 0.0f,    1.0f, 0.0f, 0.0f, //bottom left
+	 0.8f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f, //bottom right
+	 0.5f,  0.5f, 0.0f,    0.0f, 0.0f, 1.0f  //top middle
+};
+
+unsigned int indices_1[] = {
+	//Rectangle
+	0, 1, 3, //First triangle
+	1, 2, 3  //Second triangle
+
+	//Triangle
+	//0, 1, 2 //First triangle
+	//3, 4, 5  //Second triangle
+
+	//Single triangle
+	//0, 1, 2
+};
+
+unsigned int indices_2[] = {
+	//Rectangle
+	//0, 1, 3, //First triangle
+	//1, 2, 3  //Second triangle
+
+	//Triangle
+	0, 1, 2 //First triangle
+	//3, 4, 5  //Second triangle
+};
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
@@ -165,95 +257,6 @@ void checkInputs(GLFWwindow* window) {
 }
 
 unsigned int* initializeObjects() {
-
-	float vertices_1[] = {
-		//Rectangle
-		//   Position                Color         Texture coodinates
-		//0.5f,  0.5f, 0.0f,    1.0f, 0.0f, 0.0f,    1.0f, 1.0f,  // top right
-		//0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,  // bottom right
-		//-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,    0.0f, 0.0f,  // bottom left
-		//-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f   // top left
-
-		//// first triangle
-		//-0.8f, -0.5f, 0.0f, //bottom left
-		//-0.2f, -0.5f, 0.0f, //bottom right
-		//-0.5f,  0.5f, 0.0f //top middle
-
-		//Cube
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f
-	};
-
-
-	float vertices_2[] = {
-		// second triangle
-		//     Postions      |     Colors
-		 0.2f, -0.5f, 0.0f,    1.0f, 0.0f, 0.0f, //bottom left
-		 0.8f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f, //bottom right
-		 0.5f,  0.5f, 0.0f,    0.0f, 0.0f, 1.0f  //top middle
-	};
-
-	unsigned int indices_1[] = {
-		//Rectangle
-		0, 1, 3, //First triangle
-		1, 2, 3  //Second triangle
-
-		//Triangle
-		//0, 1, 2 //First triangle
-		//3, 4, 5  //Second triangle
-
-		//Single triangle
-		//0, 1, 2
-	};
-
-	unsigned int indices_2[] = {
-		//Rectangle
-		//0, 1, 3, //First triangle
-		//1, 2, 3  //Second triangle
-
-		//Triangle
-		0, 1, 2 //First triangle
-		//3, 4, 5  //Second triangle
-	};
 
 	unsigned int* VBO = new unsigned int[3];
 	glGenBuffers(3, VBO);
@@ -439,6 +442,8 @@ void renderCubes(unsigned int VAO, Shader shader, Texture texture) {
 	shader.use();
 	shader.setFloat("mixAmount", mixAmount);
 	shader.setMat4("transform", glm::mat4(1.0f));
+	shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
 	createRenderMatrices(shader);
 
@@ -494,6 +499,56 @@ void updateDeltaTime() {
 	lastFrame = currentTime;
 }
 
+unsigned int createLightObject() {
+
+	unsigned int lightVAO;
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
+
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+
+	//EBO
+	unsigned int* EBO = new unsigned int[3];
+	glGenBuffers(3, EBO);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_1), vertices_1, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[0]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_1), indices_1, GL_STATIC_DRAW);
+
+	//Binding the VBO
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	return lightVAO;
+}
+
+void renderLightObject(unsigned int lightVAO, Shader lightingShader) {
+
+	lightingShader.use();
+
+	glm::mat4 modelMatrix = glm::mat4(1.0);
+	modelMatrix = glm::translate(modelMatrix, lightPos);
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
+	lightingShader.setMat4("model", modelMatrix);
+
+	glm::mat4 viewMatrix = glm::mat4(1.0);
+	//viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+	viewMatrix = updateCamera();
+	lightingShader.setMat4("view", viewMatrix);
+
+	glm::mat4 projectionMatrix = glm::mat4(1.0f);
+	projectionMatrix = glm::perspective(glm::radians(fov / 2.0f), screenWidth / screenHeight, 0.1f, 100.0f);
+	lightingShader.setMat4("projection", projectionMatrix);
+
+	glBindVertexArray(lightVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
 int main() {
 
 	glfwInit();
@@ -528,14 +583,17 @@ int main() {
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Shader* shaderProgram = new Shader[3];
-	shaderProgram[0] = Shader("shaders/vertex_perspective.glsl", "shaders/fragment_texture_2.glsl");
+	Shader* shaderProgram = new Shader[4];
+	shaderProgram[0] = Shader("shaders/vertex_perspective.glsl", "shaders/fragment_lighting.glsl");
 	shaderProgram[1] = Shader("shaders/vertex_movement_color.glsl", "shaders/fragment_movement_color.glsl");
 	shaderProgram[2] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
+	shaderProgram[3] = Shader("shaders/vertex_lighting.glsl", "shaders/fragment_light.glsl");
 
 	float red = 1.0f;
 
 	unsigned int* VAO = initializeObjects();
+
+	unsigned int lightVAO = createLightObject();
 
 	//Texture initialization
 	Texture texture = Texture();
@@ -570,8 +628,9 @@ int main() {
 
 		//Objects
 		renderCubes(VAO[0], shaderProgram[0], texture);
-		renderObject(VAO[1], shaderProgram[1], movement);
+		//renderObject(VAO[1], shaderProgram[1], movement);
 		//renderTextureObject(VAO[2], shaderProgram[2], texture, 2);
+		renderLightObject(VAO[3], shaderProgram[3]);
 
 		//Frame buffer update
 		glBindVertexArray(0);

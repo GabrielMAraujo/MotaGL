@@ -68,6 +68,9 @@
     <None Include="shaders\fragment_texture_2.glsl" />
     <None Include="shaders\vertex_transformation.glsl" />
     <None Include="shaders\vertex_perspective.glsl" />
+    <None Include="shaders\vertex_lighting.glsl" />
+    <None Include="shaders\fragment_lighting.glsl" />
+    <None Include="shaders\fragment_light.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\container.jpg">
