@@ -71,6 +71,10 @@
     <None Include="shaders\vertex_lighting.glsl" />
     <None Include="shaders\fragment_lighting.glsl" />
     <None Include="shaders\fragment_light.glsl" />
+    <None Include="shaders\vertex_diffuse.glsl" />
+    <None Include="shaders\fragment_diffuse.glsl" />
+    <None Include="shaders\fragment_phong.glsl" />
+    <None Include="shaders\vertex_phong.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\container.jpg">

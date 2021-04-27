@@ -37,18 +37,22 @@
   <ItemGroup>
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\fragment_custom.glsl" />
+    <None Include="shaders\fragment_diffuse.glsl" />
     <None Include="shaders\fragment_light.glsl" />
     <None Include="shaders\fragment_lighting.glsl" />
     <None Include="shaders\fragment_movement_color.glsl" />
+    <None Include="shaders\fragment_phong.glsl" />
     <None Include="shaders\fragment_texture.glsl" />
     <None Include="shaders\fragment_texture_2.glsl" />
     <None Include="shaders\vertex.glsl" />
     <None Include="shaders\vertex_custom.glsl" />
+    <None Include="shaders\vertex_diffuse.glsl" />
     <None Include="shaders\vertex_inverted.glsl" />
     <None Include="shaders\vertex_lighting.glsl" />
     <None Include="shaders\vertex_movement.glsl" />
     <None Include="shaders\vertex_movement_color.glsl" />
     <None Include="shaders\vertex_perspective.glsl" />
+    <None Include="shaders\vertex_phong.glsl" />
     <None Include="shaders\vertex_texture.glsl" />
     <None Include="shaders\vertex_transformation.glsl" />
   </ItemGroup>

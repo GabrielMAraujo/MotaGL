@@ -42,6 +42,9 @@ const float zoomSensitivity = 4.0f;
 
 //Lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+float ambientLightStrength = 0.1f;
+float specularLightStrength = 0.5f;
 
 float vertices_1[] = {
 	//Rectangle
@@ -57,47 +60,48 @@ float vertices_1[] = {
 	//-0.5f,  0.5f, 0.0f //top middle
 
 	//Cube
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	//   Position      | Color           |  Tex. coord.|Normals
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,  0.0f, -1.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,
 
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+	 
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
 
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
 
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
 
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+	 0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+	-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f
 };
 
 
@@ -277,16 +281,20 @@ unsigned int* initializeObjects() {
 
 	//Set correct vertex attribute pointers
 	//Position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	//Color
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
 	//Texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
+
+	//Normal coordinates
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+	glEnableVertexAttribArray(3);
 
 	glBindVertexArray(VAO[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
@@ -443,7 +451,12 @@ void renderCubes(unsigned int VAO, Shader shader, Texture texture) {
 	shader.setFloat("mixAmount", mixAmount);
 	shader.setMat4("transform", glm::mat4(1.0f));
 	shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("lightColor", lightColor);
+	shader.setVec3("lightPos", lightPos);
+	shader.setVec3("viewPos", cameraPos);
+	shader.setFloat("ambientStrength", ambientLightStrength);
+	shader.setFloat("specularStrength", specularLightStrength);
+
 
 	createRenderMatrices(shader);
 
@@ -521,7 +534,7 @@ unsigned int createLightObject() {
 	//Binding the VBO
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	return lightVAO;
@@ -584,7 +597,7 @@ int main() {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	Shader* shaderProgram = new Shader[4];
-	shaderProgram[0] = Shader("shaders/vertex_perspective.glsl", "shaders/fragment_lighting.glsl");
+	shaderProgram[0] = Shader("shaders/vertex_phong.glsl", "shaders/fragment_phong.glsl");
 	shaderProgram[1] = Shader("shaders/vertex_movement_color.glsl", "shaders/fragment_movement_color.glsl");
 	shaderProgram[2] = Shader("shaders/vertex_transformation.glsl", "shaders/fragment_texture_2.glsl");
 	shaderProgram[3] = Shader("shaders/vertex_lighting.glsl", "shaders/fragment_light.glsl");
@@ -631,6 +644,8 @@ int main() {
 		//renderObject(VAO[1], shaderProgram[1], movement);
 		//renderTextureObject(VAO[2], shaderProgram[2], texture, 2);
 		renderLightObject(VAO[3], shaderProgram[3]);
+
+		lightPos = glm::vec3(sin((float)glfwGetTime()), cos((float)glfwGetTime()), 0.5f);
 
 		//Frame buffer update
 		glBindVertexArray(0);
